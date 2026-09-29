@@ -133,7 +133,7 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <label class="font-semibold text-slate-600"><i class="fa-solid fa-users text-teal-600"></i> Section:</label>
-                    <select id="student-section" class="border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-teal-500 focus:outline-none text-xs font-semibold bg-white text-slate-700">
+                    <select id="student-section" onchange="onSectionChange()" class="border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-teal-500 focus:outline-none text-xs font-semibold bg-white text-slate-700">
                         <option value="Grade 6 A">Grade 6 A</option>
                         <option value="Grade 6 B">Grade 6 B</option>
                         <option value="Grade 6 C">Grade 6 C</option>
@@ -304,7 +304,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button onclick="readAloudText('Do Now! Click the launch button to open Tinkercad Classroom, enter your student nickname, and create a new design titled Pencil Grip - Part 2.')" class="tts-btn support-only bg-amber-100 text-amber-800 hover:bg-amber-200 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+                        <button onclick="readAloudText('Do Now! Click your class launch button to open Tinkercad Classroom, enter your student nickname, and create a new design titled Pencil Grip - Part 2.')" class="tts-btn support-only bg-amber-100 text-amber-800 hover:bg-amber-200 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
                             <i class="fa-solid fa-volume-high"></i> Listen
                         </button>
                         <button onclick="startSectionTimer('s2', 240)" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
@@ -314,21 +314,47 @@
                 </div>
 
                 <div class="p-5 space-y-4">
-                    <div class="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 rounded-xl text-white flex flex-wrap justify-between items-center gap-3">
+                    <!-- Dynamic Tinkercad Class Launch Card -->
+                    <div class="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 rounded-xl text-white flex flex-wrap justify-between items-center gap-3 shadow-sm">
                         <div>
-                            <h4 class="font-bold text-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tinkercad Classroom Portal</h4>
-                            <p class="text-xs text-cyan-100">Click the link to enter your nickname and access your Grade 6 workplane.</p>
+                            <h4 class="font-bold text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tinkercad Classroom Portal
+                                <span id="active-class-badge" class="bg-amber-400 text-teal-950 font-extrabold text-[11px] px-2 py-0.5 rounded-md uppercase">Grade 6 A</span>
+                            </h4>
+                            <p class="text-xs text-cyan-100 mt-0.5">Click to join your specific class link and enter your student nickname.</p>
                         </div>
-                        <a href="https://www.tinkercad.com/joinclass" target="_blank" rel="noopener" class="bg-white text-cyan-700 font-extrabold px-4 py-2 rounded-lg text-xs shadow hover:bg-cyan-50 transition flex items-center gap-1.5">
-                            Launch Tinkercad <i class="fa-solid fa-external-link"></i>
+                        <a id="tinkercad-link-btn" href="https://www.tinkercad.com/joinclass/FETWZICWS" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-teal-950 font-extrabold px-5 py-2 rounded-lg text-xs shadow-md transition flex items-center gap-2">
+                            <span>Launch <span id="tinkercad-link-class-label">Grade 6 A</span> Tinkercad</span> <i class="fa-solid fa-external-link"></i>
                         </a>
+                    </div>
+
+                    <!-- Direct Class Link Shortcuts -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2"><i class="fa-solid fa-link text-teal-600 mr-1"></i> Class Direct Access Links:</span>
+                        <div class="flex flex-wrap gap-2 text-xs">
+                            <button onclick="selectSection('Grade 6 A')" class="class-pill px-3 py-1.5 rounded-lg border bg-white border-slate-300 font-bold hover:bg-teal-50 text-slate-700 flex items-center gap-1 transition" data-class="Grade 6 A">
+                                <i class="fa-solid fa-graduation-cap text-teal-600"></i> 6A
+                            </button>
+                            <button onclick="selectSection('Grade 6 B')" class="class-pill px-3 py-1.5 rounded-lg border bg-white border-slate-300 font-bold hover:bg-teal-50 text-slate-700 flex items-center gap-1 transition" data-class="Grade 6 B">
+                                <i class="fa-solid fa-graduation-cap text-teal-600"></i> 6B
+                            </button>
+                            <button onclick="selectSection('Grade 6 C')" class="class-pill px-3 py-1.5 rounded-lg border bg-white border-slate-300 font-bold hover:bg-teal-50 text-slate-700 flex items-center gap-1 transition" data-class="Grade 6 C">
+                                <i class="fa-solid fa-graduation-cap text-teal-600"></i> 6C
+                            </button>
+                            <button onclick="selectSection('Grade 6 F')" class="class-pill px-3 py-1.5 rounded-lg border bg-white border-slate-300 font-bold hover:bg-teal-50 text-slate-700 flex items-center gap-1 transition" data-class="Grade 6 F">
+                                <i class="fa-solid fa-graduation-cap text-teal-600"></i> 6F
+                            </button>
+                            <button onclick="selectSection('Grade 6 G')" class="class-pill px-3 py-1.5 rounded-lg border bg-white border-slate-300 font-bold hover:bg-teal-50 text-slate-700 flex items-center gap-1 transition" data-class="Grade 6 G">
+                                <i class="fa-solid fa-graduation-cap text-teal-600"></i> 6G
+                            </button>
+                        </div>
                     </div>
 
                     <div class="space-y-2 text-xs">
                         <h4 class="font-bold text-slate-600 uppercase">Verification Checklist:</h4>
                         <label class="flex items-center gap-2 text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-200 cursor-pointer">
                             <input type="checkbox" id="chk-login-1" class="rounded text-teal-600 focus:ring-teal-500">
-                            I logged into Tinkercad using my assigned student nickname.
+                            I logged into my Tinkercad Classroom using my assigned student nickname.
                         </label>
                         <label class="flex items-center gap-2 text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-200 cursor-pointer">
                             <input type="checkbox" id="chk-login-2" class="rounded text-teal-600 focus:ring-teal-500">
@@ -716,13 +742,13 @@
                 </div>
 
                 <!-- TINKERCAD DIRECT PORTAL CARD -->
-                <div class="bg-cyan-900 rounded-2xl p-4 text-white text-xs space-y-2">
+                <div class="bg-cyan-900 rounded-2xl p-4 text-white text-xs space-y-2 shadow-sm">
                     <div class="font-bold text-cyan-200 flex items-center gap-1.5">
-                        <i class="fa-solid fa-cube"></i> Tinkercad Direct Portal
+                        <i class="fa-solid fa-cube text-amber-400"></i> Tinkercad Class Portal
                     </div>
-                    <p class="text-cyan-100 text-[11px]">Classroom portal ready? Open your design workspace in a new tab.</p>
-                    <a href="https://www.tinkercad.com/joinclass" target="_blank" class="block text-center bg-cyan-400 text-cyan-950 font-extrabold py-1.5 rounded-lg hover:bg-cyan-300 transition">
-                        Open Tinkercad
+                    <p class="text-cyan-100 text-[11px]">Direct link for <strong id="sidebar-class-name" class="text-amber-300">Grade 6 A</strong>:</p>
+                    <a id="sidebar-tinkercad-btn" href="https://www.tinkercad.com/joinclass/FETWZICWS" target="_blank" class="block text-center bg-cyan-400 text-cyan-950 font-extrabold py-2 rounded-lg hover:bg-cyan-300 transition shadow">
+                        Open <span id="sidebar-class-label">Grade 6 A</span> Class
                     </a>
                 </div>
 
@@ -750,6 +776,15 @@
         let totalScore = 0;
         let scoreState = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
         
+        // Tinkercad Class Links Map
+        const tinkercadClassLinks = {
+            'Grade 6 A': 'https://www.tinkercad.com/joinclass/FETWZICWS',
+            'Grade 6 B': 'https://www.tinkercad.com/joinclass/AWC49BXNI',
+            'Grade 6 C': 'https://www.tinkercad.com/joinclass/TVA6SYR97',
+            'Grade 6 F': 'https://www.tinkercad.com/joinclass/YQK9JAAKT',
+            'Grade 6 G': 'https://www.tinkercad.com/joinclass/WDAEFVR7F'
+        };
+
         // Timer globals
         let timerInterval = null;
         let timeRemaining = 120;
@@ -790,6 +825,7 @@
 
         window.onload = function() {
             renderWordSearchGrid();
+            updateTinkercadLinks();
 
             // Disable copy/paste in text inputs
             const textFields = document.querySelectorAll('input, textarea');
@@ -802,6 +838,44 @@
             // Default Tier Setup (Support Tier active on initial load)
             setTier('support');
         };
+
+        function onSectionChange() {
+            updateTinkercadLinks();
+        }
+
+        function selectSection(className) {
+            const selectEl = document.getElementById('student-section');
+            selectEl.value = className;
+            updateTinkercadLinks();
+        }
+
+        function updateTinkercadLinks() {
+            const selectedClass = document.getElementById('student-section').value || 'Grade 6 A';
+            const link = tinkercadClassLinks[selectedClass] || tinkercadClassLinks['Grade 6 A'];
+
+            // Update main banner link
+            const linkBtn = document.getElementById('tinkercad-link-btn');
+            if (linkBtn) linkBtn.href = link;
+
+            document.getElementById('active-class-badge').innerText = selectedClass;
+            document.getElementById('tinkercad-link-class-label').innerText = selectedClass;
+
+            // Update sidebar link
+            const sidebarBtn = document.getElementById('sidebar-tinkercad-btn');
+            if (sidebarBtn) sidebarBtn.href = link;
+            document.getElementById('sidebar-class-name').innerText = selectedClass;
+            document.getElementById('sidebar-class-label').innerText = selectedClass;
+
+            // Highlight class pills
+            document.querySelectorAll('.class-pill').forEach(pill => {
+                const c = pill.getAttribute('data-class');
+                if (c === selectedClass) {
+                    pill.className = 'class-pill px-3 py-1.5 rounded-lg border bg-teal-600 text-white font-bold shadow-sm flex items-center gap-1 transition';
+                } else {
+                    pill.className = 'class-pill px-3 py-1.5 rounded-lg border bg-white border-slate-300 font-bold hover:bg-teal-50 text-slate-700 flex items-center gap-1 transition';
+                }
+            });
+        }
 
         function getObjectivesText() {
             return "Dubai Modern Education School Grade 6 ICT Lesson Objectives. The Student Will: Combine and modify 3 dimensions shapes using Grouping, Aligning, and Resizing tools in Tinkercad. Construct an ergonomic 3D Pencil Grip Model with standard 8 millimeter inner pencil shaft dimensions ready for 3D printing.";
