@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMES ICT Grade 6 - Tinkercad Pencil Grip Playbook Worksheet</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dmes: {
+                            teal: '#00838f',
+                            darkTeal: '#00565b',
+                            gold: '#d4af37',
+                            lightBg: '#f0f4f8',
+                            darkCard: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles & Copy-Paste Prevention */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            user-select: none; /* Disables text selection outside inputs */
+        }
+
+        /* Prevent copy-paste in input fields */
+        input, textarea, select {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00838f;
+            border-radius: 4px;
+        }
+
+        /* Pulse highlight animation for active timer */
+        @keyframes pulse-border {
+            0%, 100% { border-color: #00838f; }
+            50% { border-color: #ef4444; }
+        }
+        .timer-warning {
+            animation: pulse-border 1s infinite;
+        }
+
+        .word-cell {
+            transition: all 0.15s ease;
+        }
+        .word-cell.selected {
+            background-color: #0d9488 !important;
+            color: #ffffff !important;
+            font-weight: bold;
+            transform: scale(1.05);
+        }
+        .word-cell.found {
+            background-color: #10b981 !important;
+            color: #ffffff !important;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen pb-16">
+
+    <!-- Top Header Banner -->
+    <header class="bg-gradient-to-r from-teal-800 via-teal-700 to-cyan-900 text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-white p-2 rounded-lg shadow-md">
+                    <i class="fa-solid font-bold text-2xl text-teal-700 fa-cubes"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold tracking-tight">Dubai Modern Education School</h1>
+                    <p class="text-xs text-teal-200">DMES Playbook Routine • Grade 6 ICT • Week 4 • Part 2</p>
+                </div>
+            </div>
+
+            <!-- Tier Selector -->
+            <div class="flex items-center bg-teal-900/60 p-1.5 rounded-xl border border-teal-500/30 text-xs md:text-sm">
+                <span class="text-teal-200 font-semibold px-2 flex items-center gap-1">
+                    <i class="fa-solid fa-layer-group"></i> Tier:
+                </span>
+                <button onclick="setTier('support')" id="btn-tier-support" class="px-3 py-1 rounded-lg font-medium transition-all bg-amber-500 text-white shadow">
+                    Support Tier
+                </button>
+                <button onclick="setTier('core')" id="btn-tier-core" class="px-3 py-1 rounded-lg font-medium transition-all text-teal-200 hover:text-white">
+                    Core Tier
+                </button>
+                <button onclick="setTier('challenge')" id="btn-tier-challenge" class="px-3 py-1 rounded-lg font-medium transition-all text-teal-200 hover:text-white">
+                    Challenge Tier
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Student Details Bar -->
+    <div class="max-w-7xl mx-auto px-4 mt-4">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap gap-4 items-center justify-between">
+            <div class="flex flex-wrap items-center gap-4 text-sm w-full md:w-auto">
+                <div class="flex items-center gap-2">
+                    <label class="font-semibold text-slate-600"><i class="fa-solid fa-user text-teal-600"></i> Full Name:</label>
+                    <input type="text" id="student-name" placeholder="Enter Full Name..." class="no-copy border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-teal-500 focus:outline-none w-48 text-xs font-medium">
+                </div>
+                <div class="flex items-center gap-2">
+                    <label class="font-semibold text-slate-600"><i class="fa-solid fa-id-card text-teal-600"></i> Student ID:</label>
+                    <input type="text" id="student-id" placeholder="e.g., DMES-6012" class="no-copy border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-teal-500 focus:outline-none w-36 text-xs font-medium">
+                </div>
+                <div class="flex items-center gap-2">
+                    <label class="font-semibold text-slate-600"><i class="fa-solid fa-users text-teal-600"></i> Section:</label>
+                    <select id="student-section" class="border border-slate-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-teal-500 focus:outline-none text-xs font-semibold bg-white text-slate-700">
+                        <option value="Grade 6 A">Grade 6 A</option>
+                        <option value="Grade 6 B">Grade 6 B</option>
+                        <option value="Grade 6 C">Grade 6 C</option>
+                        <option value="Grade 6 F">Grade 6 F</option>
+                        <option value="Grade 6 G">Grade 6 G</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Total Score Badge -->
+            <div class="flex items-center gap-3 bg-teal-50 px-4 py-2 rounded-lg border border-teal-200">
+                <i class="fa-solid fa-trophy text-amber-500 text-xl"></i>
+                <div>
+                    <span class="text-[10px] uppercase font-bold text-teal-800 tracking-wider">Total Progress Score</span>
+                    <div class="text-lg font-extrabold text-teal-900"><span id="current-score">0</span> / 100 Points</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 mt-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+        <!-- LEFT/MAIN COLUMN: Section Cards -->
+        <div class="lg:col-span-3 space-y-6">
+
+            <!-- Banner & TSW Objectives -->
+            <div class="bg-gradient-to-r from-teal-700 via-teal-600 to-cyan-700 rounded-2xl p-5 text-white shadow-md space-y-3">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="bg-teal-900/80 text-teal-200 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Week 4 • Lesson 2 of 2</span>
+                        <h2 class="text-2xl font-extrabold mt-1">Intro to Tinkercad & Pencil Grip Design</h2>
+                    </div>
+                    <!-- Global Voice Assistant Read Aloud for Support Tier ONLY -->
+                    <button onclick="readAloudText(getObjectivesText())" class="tts-btn support-only bg-amber-400 hover:bg-amber-300 text-teal-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow transition">
+                        <i class="fa-solid fa-volume-high"></i> Read Objectives
+                    </button>
+                </div>
+
+                <!-- TSW Objectives Box -->
+                <div class="bg-teal-900/40 backdrop-blur-sm border border-teal-300/30 rounded-xl p-3.5 text-xs text-teal-50 space-y-2">
+                    <div class="font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5 text-sm">
+                        <i class="fa-solid fa-bullseye"></i> Lesson Objectives (TSW - The Student Will):
+                    </div>
+                    <ul class="list-disc list-inside space-y-1 text-teal-100 pl-1 text-xs">
+                        <li><strong>Combine & Modify 3D Shapes:</strong> Master core Tinkercad modeling operations using <strong>Grouping, Aligning, and Resizing</strong> functions.</li>
+                        <li><strong>Apply CAD Ergonomics:</strong> Construct an ergonomic <strong>3D Pencil Grip Model</strong> with standard 8mm inner pencil shaft dimensions ready for 3D printing.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SECTION 1: LESSON ENTRY & VOCABULARY WORD SEARCH (2 MINS) -->
+            <section id="section-1" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all">
+                <div class="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-sm">1</span>
+                        <div>
+                            <h3 class="font-bold text-slate-800">Lesson Entry: Interactive Word Search</h3>
+                            <p class="text-xs text-slate-500">2 Minutes • 15 Points • Find Key CAD Terms</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="readAloudText('Lesson Entry Vocabulary Challenge. Find the key vocabulary words in the word search grid: CONTRAST, DIFFERENCE, DISTINCT, ALIGN, and GROUP. Then match each definition below.')" class="tts-btn support-only bg-amber-100 text-amber-800 hover:bg-amber-200 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high"></i> Listen
+                        </button>
+                        <button onclick="startSectionTimer('s1', 120)" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+                            <i class="fa-solid fa-play"></i> Start Timer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-5 space-y-5">
+                    <!-- Support Speech Reader Indicator -->
+                    <div class="support-only bg-amber-50 p-2.5 rounded-xl border border-amber-200 text-xs text-amber-900 flex items-center justify-between">
+                        <span><i class="fa-solid fa-audio-description text-amber-600 mr-1.5"></i> <strong>Support Mode Voice Assistant Active:</strong> Click voice icons or highlight text to read aloud!</span>
+                    </div>
+
+                    <p class="text-xs text-slate-700">Find the 5 key 3D modeling vocabulary words in the puzzle grid (Click letter paths to select words):</p>
+
+                    <!-- Word Search Grid & Word Tags -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xs font-bold text-slate-600 uppercase">10x10 CAD Word Search Grid</span>
+                                <button onclick="resetWordSearch()" class="text-[11px] text-teal-700 hover:underline font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-rotate-left"></i> Reset Grid
+                                </button>
+                            </div>
+                            
+                            <!-- Interactive 10x10 Grid -->
+                            <div id="word-search-container" class="grid grid-cols-10 gap-1 max-w-xs mx-auto font-mono text-xs font-bold text-slate-700 select-none">
+                                <!-- Dynamically populated by JS engine -->
+                            </div>
+
+                            <!-- Word Status Tags -->
+                            <div class="mt-4 flex flex-wrap justify-center gap-1.5 text-xs">
+                                <span id="tag-CONTRAST" class="px-2 py-0.5 bg-slate-200 rounded text-slate-600 font-semibold border border-slate-300">CONTRAST</span>
+                                <span id="tag-DIFFERENCE" class="px-2 py-0.5 bg-slate-200 rounded text-slate-600 font-semibold border border-slate-300">DIFFERENCE</span>
+                                <span id="tag-DISTINCT" class="px-2 py-0.5 bg-slate-200 rounded text-slate-600 font-semibold border border-slate-300">DISTINCT</span>
+                                <span id="tag-ALIGN" class="px-2 py-0.5 bg-slate-200 rounded text-slate-600 font-semibold border border-slate-300">ALIGN</span>
+                                <span id="tag-GROUP" class="px-2 py-0.5 bg-slate-200 rounded text-slate-600 font-semibold border border-slate-300">GROUP</span>
+                            </div>
+                        </div>
+
+                        <!-- Vocabulary Concept Matching -->
+                        <div class="space-y-3.5 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wide border-b border-slate-200 pb-2">Match Vocabulary Meanings:</h4>
+
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">1. Highlighting visual differences between shapes on workplane:</label>
+                                <select id="match-1" class="w-full border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 bg-white font-medium">
+                                    <option value="">-- Choose Word --</option>
+                                    <option value="Contrast">Contrast</option>
+                                    <option value="Difference">Difference</option>
+                                    <option value="Distinct">Distinct</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">2. How a shape changed after cutting a hole out of a solid body:</label>
+                                <select id="match-2" class="w-full border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 bg-white font-medium">
+                                    <option value="">-- Choose Word --</option>
+                                    <option value="Contrast">Contrast</option>
+                                    <option value="Difference">Difference</option>
+                                    <option value="Distinct">Distinct</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">3. Clear, separate individual objects before grouping them together:</label>
+                                <select id="match-3" class="w-full border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 bg-white font-medium">
+                                    <option value="">-- Choose Word --</option>
+                                    <option value="Contrast">Contrast</option>
+                                    <option value="Difference">Difference</option>
+                                    <option value="Distinct">Distinct</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section Footer & Check -->
+                    <div class="pt-2 flex flex-wrap gap-2 justify-between items-center border-t border-slate-100">
+                        <div class="flex gap-2">
+                            <button onclick="checkSection1()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow-sm transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-check"></i> Check Answers
+                            </button>
+                            <button onclick="toggleHint('hint-1')" class="bg-amber-100 text-amber-800 hover:bg-amber-200 font-semibold px-3 py-1.5 rounded-lg text-xs transition flex items-center gap-1">
+                                <i class="fa-regular fa-lightbulb"></i> Hint
+                            </button>
+                        </div>
+                        <span id="s1-status" class="text-xs font-bold text-slate-400">Not Attempted</span>
+                    </div>
+
+                    <div id="hint-1" class="hidden bg-amber-50 p-3 rounded-lg border border-amber-200 text-xs text-amber-800">
+                        <strong>Hint:</strong> Words can be horizontal or vertical! CONTRAST, DIFFERENCE, DISTINCT, ALIGN, and GROUP are hidden in the matrix.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: DO NOW - LOGIN (4 MINS) -->
+            <section id="section-2" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all">
+                <div class="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-sm">2</span>
+                        <div>
+                            <h3 class="font-bold text-slate-800">Do Now! Tinkercad Account Login</h3>
+                            <p class="text-xs text-slate-500">4 Minutes • 10 Points • Quick Classroom Launch</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="readAloudText('Do Now! Click the launch button to open Tinkercad Classroom, enter your student nickname, and create a new design titled Pencil Grip - Part 2.')" class="tts-btn support-only bg-amber-100 text-amber-800 hover:bg-amber-200 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high"></i> Listen
+                        </button>
+                        <button onclick="startSectionTimer('s2', 240)" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+                            <i class="fa-solid fa-play"></i> Start Timer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-5 space-y-4">
+                    <div class="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 rounded-xl text-white flex flex-wrap justify-between items-center gap-3">
+                        <div>
+                            <h4 class="font-bold text-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tinkercad Classroom Portal</h4>
+                            <p class="text-xs text-cyan-100">Click the link to enter your nickname and access your Grade 6 workplane.</p>
+                        </div>
+                        <a href="https://www.tinkercad.com/joinclass" target="_blank" rel="noopener" class="bg-white text-cyan-700 font-extrabold px-4 py-2 rounded-lg text-xs shadow hover:bg-cyan-50 transition flex items-center gap-1.5">
+                            Launch Tinkercad <i class="fa-solid fa-external-link"></i>
+                        </a>
+                    </div>
+
+                    <div class="space-y-2 text-xs">
+                        <h4 class="font-bold text-slate-600 uppercase">Verification Checklist:</h4>
+                        <label class="flex items-center gap-2 text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-200 cursor-pointer">
+                            <input type="checkbox" id="chk-login-1" class="rounded text-teal-600 focus:ring-teal-500">
+                            I logged into Tinkercad using my assigned student nickname.
+                        </label>
+                        <label class="flex items-center gap-2 text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-200 cursor-pointer">
+                            <input type="checkbox" id="chk-login-2" class="rounded text-teal-600 focus:ring-teal-500">
+                            I opened a new 3D design workspace titled <strong>"Pencil Grip - Part 2"</strong>.
+                        </label>
+                    </div>
+
+                    <div class="pt-2 flex justify-between items-center border-t border-slate-100">
+                        <button onclick="checkSection2()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow-sm transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-check"></i> Verify Login
+                        </button>
+                        <span id="s2-status" class="text-xs font-bold text-slate-400">Pending</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: TEACH - VIDEO EXPLORATION (10 MINS) -->
+            <section id="section-3" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all">
+                <div class="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-sm">3</span>
+                        <div>
+                            <h3 class="font-bold text-slate-800">Teach: Video Guide - Core CAD Tools</h3>
+                            <p class="text-xs text-slate-500">10 Minutes • 20 Points • Grouping, Aligning & Resizing</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="readAloudText('Teach section: Watch the tutorial demonstration on Resizing, Aligning, and Grouping shapes. Then answer the concept questions below.')" class="tts-btn support-only bg-amber-100 text-amber-800 hover:bg-amber-200 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high"></i> Listen
+                        </button>
+                        <button onclick="startSectionTimer('s3', 600)" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+                            <i class="fa-solid fa-play"></i> Start Timer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-5 space-y-4">
+                    <!-- Embedded Video Demonstration -->
+                    <div class="relative bg-slate-900 rounded-xl overflow-hidden aspect-video w-full border border-slate-700 shadow">
+                        <iframe 
+                            class="w-full h-full border-0" 
+                            src="https://www.youtube.com/embed/0RP9T2I0kvA" 
+                            title="Tinkercad Core Tools Demonstration" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="bg-teal-50 p-3 rounded-xl border border-teal-200 text-center">
+                            <div class="text-teal-700 font-extrabold text-xs"><i class="fa-solid fa-up-right-and-down-left-from-center mr-1"></i> 1. RESIZE</div>
+                            <p class="text-[11px] text-slate-600 mt-1">Drag corner handles or enter exact dimensions ($25\text{ mm}$ height, $8\text{ mm}$ inner diameter).</p>
+                        </div>
+                        <div class="bg-teal-50 p-3 rounded-xl border border-teal-200 text-center">
+                            <div class="text-teal-700 font-extrabold text-xs"><i class="fa-solid fa-object-group mr-1"></i> 2. ALIGN</div>
+                            <p class="text-[11px] text-slate-600 mt-1">Select both shapes and click black center dots to line them up perfectly.</p>
+                        </div>
+                        <div class="bg-teal-50 p-3 rounded-xl border border-teal-200 text-center">
+                            <div class="text-teal-700 font-extrabold text-xs"><i class="fa-solid fa-layer-group mr-1"></i> 3. GROUP</div>
+                            <p class="text-[11px] text-slate-600 mt-1">Combine a Solid Outer Shell + Hole Shaft into one unified 3D pencil grip.</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Quick Check Questions -->
+                    <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
+                        <h4 class="font-bold text-slate-700">Concept Questions (Select correct answers):</h4>
+                        
+                        <div>
+                            <p class="font-semibold text-slate-800">Q1: Which shortcut tool aligns two shapes centered right over each other?</p>
+                            <div class="flex gap-4 mt-1.5">
+                                <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="q1" value="Align" class="text-teal-600"> Align Tool (L)</label>
+                                <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="q1" value="Duplicate" class="text-teal-600"> Duplicate Tool</label>
+                                <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="q1" value="Mirror" class="text-teal-600"> Mirror Tool</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="font-semibold text-slate-800">Q2: What happens when you Group a Solid Cylinder with a Hole Cylinder?</p>
+                            <div class="flex gap-4 mt-1.5">
+                                <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="q2" value="Hole" class="text-teal-600"> Creates a hollow inner shaft inside the solid body</label>
+                                <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="q2" value="Disappear" class="text-teal-600"> Both shapes disappear completely</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex flex-wrap gap-2 justify-between items-center border-t border-slate-100">
+                        <div class="flex gap-2">
+                            <button onclick="checkSection3()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow-sm transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-check"></i> Check Concept Answers
+                            </button>
+                            <button onclick="toggleHint('hint-3')" class="bg-amber-100 text-amber-800 hover:bg-amber-200 font-semibold px-3 py-1.5 rounded-lg text-xs transition flex items-center gap-1">
+                                <i class="fa-regular fa-lightbulb"></i> Hint
+                            </button>
+                        </div>
+                        <span id="s3-status" class="text-xs font-bold text-slate-400">Not Attempted</span>
+                    </div>
+
+                    <div id="hint-3" class="hidden bg-amber-50 p-3 rounded-lg border border-amber-200 text-xs text-amber-800">
+                        <strong>Hint:</strong> Align uses black dots to center shapes! Grouping cuts away material from the solid shape where the hole is placed.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: MAIN TASK - PENCIL GRIP DESIGN (20 MINS) -->
+            <section id="section-4" class="bg-white rounded-2xl border-2 border-teal-500 shadow-md overflow-hidden transition-all">
+                <div class="bg-gradient-to-r from-teal-700 to-cyan-800 text-white p-4 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-amber-400 text-teal-950 font-extrabold flex items-center justify-center text-sm">4</span>
+                        <div>
+                            <h3 class="font-bold text-base">Main Task: Ergonomic Pencil Grip Design</h3>
+                            <p class="text-xs text-teal-100">20 Minutes • 35 Points • I DO, WE DO, YOU DO Modeling Workflow</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="readAloudText('Main Task Ergonomic Pencil Grip Design. Step 1: Resize grip body to 25 millimeters height. Step 2: Add 8 millimeter Hole cylinder and align center. Step 3: Group shapes together.')" class="tts-btn support-only bg-amber-300 text-teal-950 font-bold px-2.5 py-1 rounded-lg text-xs flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high"></i> Listen
+                        </button>
+                        <button onclick="startSectionTimer('s4', 1200)" class="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-teal-950 rounded-lg text-xs font-extrabold flex items-center gap-1.5 shadow transition">
+                            <i class="fa-solid fa-play"></i> Start 20-Min Timer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-5 space-y-6">
+
+                    <!-- Guided Workflow Stages -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="border border-slate-200 p-3.5 rounded-xl bg-slate-50">
+                            <span class="bg-teal-100 text-teal-800 text-xs font-bold px-2 py-0.5 rounded">I DO (Teacher Demo)</span>
+                            <h4 class="font-bold text-xs text-slate-800 mt-2">1. Teacher Modeling (4 Mins):</h4>
+                            <p class="text-xs text-slate-600 mt-1">Watch how to drag a main grip shape ($25\text{ mm}$ tall) and place an $8\text{ mm}$ Hole Cylinder in the middle.</p>
+                        </div>
+
+                        <div class="border border-slate-200 p-3.5 rounded-xl bg-slate-50">
+                            <span class="bg-cyan-100 text-cyan-800 text-xs font-bold px-2 py-0.5 rounded">WE DO (Guided Practice)</span>
+                            <h4 class="font-bold text-xs text-slate-800 mt-2">2. Guided Practice (6 Mins):</h4>
+                            <p class="text-xs text-slate-600 mt-1">Select both shapes $\rightarrow$ click <strong>Align</strong> $\rightarrow$ center dots $\rightarrow$ click <strong>Group</strong> to cut out the pencil shaft.</p>
+                        </div>
+
+                        <div class="border border-teal-300 p-3.5 rounded-xl bg-teal-50/50">
+                            <span class="bg-amber-400 text-teal-950 text-xs font-bold px-2 py-0.5 rounded">YOU DO (Independent)</span>
+                            <h4 class="font-bold text-xs text-teal-900 mt-2">3. Independent Modeling (10 Mins):</h4>
+                            <p class="text-xs text-teal-800 mt-1">Add outer ergonomic features like finger bumps, side rings, or soft ridges!</p>
+                        </div>
+                    </div>
+
+                    <!-- Differentiated Tier Instructions -->
+                    <div id="tier-task-box" class="p-4 rounded-xl border border-amber-300 bg-amber-50 text-xs text-slate-800 space-y-2">
+                        <div class="flex items-center gap-2 font-bold text-amber-900">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <span id="tier-title">Support Tier Task Instructions</span>
+                        </div>
+                        <p id="tier-desc">Follow step-by-step guidance. Target cylinder height = 25mm, inner hole = 8mm. Click text for Speech Read Aloud!</p>
+                    </div>
+
+                    <!-- Task Completion Checklist -->
+                    <div class="space-y-2 text-xs">
+                        <h4 class="font-bold text-slate-700 uppercase tracking-wide">Pencil Grip Construction Checklist:</h4>
+                        
+                        <label class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                            <span class="flex items-center gap-2">
+                                <input type="checkbox" id="task-chk-1" class="rounded text-teal-600">
+                                1. Placed base grip shape & Resized to height = $25\text{ mm}$
+                            </span>
+                            <span class="text-slate-400 font-mono">10 Pts</span>
+                        </label>
+
+                        <label class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                            <span class="flex items-center gap-2">
+                                <input type="checkbox" id="task-chk-2" class="rounded text-teal-600">
+                                2. Added Hole Cylinder ($8\text{ mm}$ diameter) & Aligned centered
+                            </span>
+                            <span class="text-slate-400 font-mono">10 Pts</span>
+                        </label>
+
+                        <label class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                            <span class="flex items-center gap-2">
+                                <input type="checkbox" id="task-chk-3" class="rounded text-teal-600">
+                                3. Grouped shapes into a single complete 3D Pencil Grip model
+                            </span>
+                            <span class="text-slate-400 font-mono">15 Pts</span>
+                        </label>
+                    </div>
+
+                    <!-- File Upload Box -->
+                    <div class="border-2 border-dashed border-teal-300 bg-teal-50/30 p-5 rounded-2xl text-center">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-teal-600 mb-2"></i>
+                        <h4 class="font-bold text-xs text-slate-800">Upload Tinkercad Screenshot / Project Proof</h4>
+                        <p class="text-xs text-slate-500 mt-1">Accepted file formats: <strong>.png, .jpg, .pdf, .docx</strong></p>
+                        
+                        <div class="mt-3 inline-block">
+                            <input type="file" id="file-upload" accept=".png,.jpg,.jpeg,.pdf,.docx,.doc" class="hidden" onchange="handleFileUpload(event)">
+                            <label for="file-upload" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2 rounded-lg text-xs cursor-pointer shadow-sm transition inline-flex items-center gap-2">
+                                <i class="fa-solid fa-paperclip"></i> Select File to Upload
+                            </label>
+                        </div>
+                        <div id="file-info" class="mt-2 text-xs text-teal-800 font-semibold hidden"></div>
+                    </div>
+
+                    <div class="pt-2 flex justify-between items-center border-t border-slate-100">
+                        <div class="flex gap-2">
+                            <button onclick="checkSection4()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow-sm transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-check"></i> Submit Pencil Grip Task
+                            </button>
+                            <button onclick="toggleHint('hint-4')" class="bg-amber-100 text-amber-800 hover:bg-amber-200 font-semibold px-3 py-1.5 rounded-lg text-xs transition flex items-center gap-1">
+                                <i class="fa-regular fa-lightbulb"></i> Sample Dimensions
+                            </button>
+                        </div>
+                        <span id="s4-status" class="text-xs font-bold text-slate-400">Not Submitted</span>
+                    </div>
+
+                    <div id="hint-4" class="hidden bg-amber-50 p-3 rounded-lg border border-amber-200 text-xs text-amber-800 space-y-1">
+                        <p><strong>Sample Solution Dimensions:</strong> Standard pencil width is $7.5\text{--}8\text{ mm}$. Set hole to $8\text{ mm}\times 8\text{ mm}$ and height to $25\text{ mm}$ or $30\text{ mm}$ for optimal grip comfort!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: PROGRESS CHECK (5 MINS) -->
+            <section id="section-5" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all">
+                <div class="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-sm">5</span>
+                        <div>
+                            <h3 class="font-bold text-slate-800">Progress Check & Screen Inspection</h3>
+                            <p class="text-xs text-slate-500">5 Minutes • 10 Points • Quality Assessment Rubric</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="readAloudText('Progress check. Check off your screen model against teacher criteria.')" class="tts-btn support-only bg-amber-100 text-amber-800 hover:bg-amber-200 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high"></i> Listen
+                        </button>
+                        <button onclick="startSectionTimer('s5', 300)" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+                            <i class="fa-solid fa-play"></i> Start Timer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-5 space-y-3 text-xs">
+                    <p class="text-slate-700">Self-evaluate your completed Tinkercad model against teacher criteria:</p>
+
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200 cursor-pointer">
+                            <input type="checkbox" id="eval-1" class="rounded text-teal-600">
+                            ✅ Resized shapes accurately according to $25\text{ mm}$ height / $8\text{ mm}$ hole specs.
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200 cursor-pointer">
+                            <input type="checkbox" id="eval-2" class="rounded text-teal-600">
+                            ✅ Aligned center pencil hole precisely inside outer grip shell.
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200 cursor-pointer">
+                            <input type="checkbox" id="eval-3" class="rounded text-teal-600">
+                            ✅ Grouped into a single clean solid model ready for 3D printing.
+                        </label>
+                    </div>
+
+                    <div class="pt-2 flex justify-between items-center border-t border-slate-100">
+                        <button onclick="checkSection5()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow-sm transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-check"></i> Verify Evaluation
+                        </button>
+                        <span id="s5-status" class="text-xs font-bold text-slate-400">Pending</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6: CLOSURE (2 MINS) -->
+            <section id="section-6" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all">
+                <div class="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-sm">6</span>
+                        <div>
+                            <h3 class="font-bold text-slate-800">Closure: Fast Reflection</h3>
+                            <p class="text-xs text-slate-500">2 Minutes • 10 Points • Finger Poll Selection</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="readAloudText('Closure Reflection: Which feature best describes your custom pencil grip design today? Choose 1 finger, 2 fingers, or 3 fingers.')" class="tts-btn support-only bg-amber-100 text-amber-800 hover:bg-amber-200 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high"></i> Listen
+                        </button>
+                        <button onclick="startSectionTimer('s6', 120)" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+                            <i class="fa-solid fa-play"></i> Start Timer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-5 space-y-4">
+                    <p class="text-xs text-slate-700 font-semibold">Which feature best describes your custom pencil grip design today?</p>
+
+                    <div class="grid grid-cols-3 gap-3 text-center text-xs">
+                        <button onclick="selectPoll(1)" id="poll-1" class="p-3 border-2 border-slate-200 rounded-xl hover:border-teal-500 transition">
+                            <div class="text-2xl mb-1">👌</div>
+                            <div class="font-bold text-slate-800">1 Finger</div>
+                            <div class="text-slate-500 text-[10px]">Smooth Surface Body</div>
+                        </button>
+                        <button onclick="selectPoll(2)" id="poll-2" class="p-3 border-2 border-slate-200 rounded-xl hover:border-teal-500 transition">
+                            <div class="text-2xl mb-1">✌️</div>
+                            <div class="font-bold text-slate-800">2 Fingers</div>
+                            <div class="text-slate-500 text-[10px]">Ergonomic Finger Bumps</div>
+                        </button>
+                        <button onclick="selectPoll(3)" id="poll-3" class="p-3 border-2 border-slate-200 rounded-xl hover:border-teal-500 transition">
+                            <div class="text-2xl mb-1">🤟</div>
+                            <div class="font-bold text-slate-800">3 Fingers</div>
+                            <div class="text-slate-500 text-[10px]">Textured Outer Ridges</div>
+                        </button>
+                    </div>
+
+                    <div class="pt-2 flex justify-between items-center border-t border-slate-100">
+                        <button onclick="checkSection6()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow-sm transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-check"></i> Save Reflection
+                        </button>
+                        <span id="s6-status" class="text-xs font-bold text-slate-400">Pending</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SUBMIT & DOWNLOAD REPORT FOR GOOGLE CLASSROOM -->
+            <div class="bg-gradient-to-r from-teal-800 to-cyan-900 rounded-2xl p-6 text-white text-center shadow-lg space-y-3">
+                <h3 class="text-xl font-extrabold"><i class="fa-solid fa-graduation-cap text-amber-400 mr-2"></i> Google Classroom Assignment Submission</h3>
+                <p class="text-xs text-teal-100 max-w-lg mx-auto">Click below to generate and download your official ICT Worksheet Summary report to attach in Google Classroom.</p>
+                
+                <div class="pt-2 flex justify-center gap-4">
+                    <button onclick="downloadReport()" class="bg-amber-400 hover:bg-amber-300 text-teal-950 font-extrabold px-6 py-2.5 rounded-xl text-sm shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-file-arrow-down"></i> Download Completion Report
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: FLOATING TIMER DOCK & ROADMAP -->
+        <aside class="lg:col-span-1 space-y-6">
+            <div class="sticky top-20 space-y-4">
+
+                <!-- ACTIVE LARGE TIMER PANEL -->
+                <div id="timer-card" class="bg-white rounded-2xl border-2 border-teal-600 shadow-md p-4 text-center transition-all">
+                    <span class="text-[10px] font-extrabold uppercase text-teal-700 tracking-wider block mb-1">Active Task Timer</span>
+                    
+                    <div id="timer-display" class="text-4xl font-extrabold font-mono text-slate-800 my-1">02:00</div>
+                    <div id="timer-task-label" class="text-xs font-bold text-slate-500">Lesson Entry</div>
+
+                    <!-- Audio indicator -->
+                    <div class="mt-2 flex justify-center items-center gap-1 text-[11px] text-teal-700 font-semibold">
+                        <i class="fa-solid fa-bell"></i> Audio Alarm Sound Enabled
+                    </div>
+
+                    <!-- Timer Controls -->
+                    <div class="mt-3 flex justify-center gap-2">
+                        <button onclick="pauseTimer()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1 rounded text-xs">
+                            <i class="fa-solid fa-pause"></i> Pause
+                        </button>
+                        <button onclick="resetTimer()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1 rounded text-xs">
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- QUICK NAVIGATION ROADMAP -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 space-y-2">
+                    <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wider">Lesson Roadmap</h4>
+                    <div class="space-y-1.5 text-xs">
+                        <a href="#section-1" class="flex justify-between items-center p-2 rounded hover:bg-slate-50 text-slate-700 font-medium">
+                            <span>1. Lesson Entry Vocab</span>
+                            <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">2m</span>
+                        </a>
+                        <a href="#section-2" class="flex justify-between items-center p-2 rounded hover:bg-slate-50 text-slate-700 font-medium">
+                            <span>2. Do Now! Login</span>
+                            <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">4m</span>
+                        </a>
+                        <a href="#section-3" class="flex justify-between items-center p-2 rounded hover:bg-slate-50 text-slate-700 font-medium">
+                            <span>3. Teach Video</span>
+                            <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">10m</span>
+                        </a>
+                        <a href="#section-4" class="flex justify-between items-center p-2 rounded hover:bg-slate-50 text-slate-700 font-medium font-bold text-teal-700">
+                            <span>4. Main Task Grip</span>
+                            <span class="text-[10px] bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded">20m</span>
+                        </a>
+                        <a href="#section-5" class="flex justify-between items-center p-2 rounded hover:bg-slate-50 text-slate-700 font-medium">
+                            <span>5. Progress Check</span>
+                            <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">5m</span>
+                        </a>
+                        <a href="#section-6" class="flex justify-between items-center p-2 rounded hover:bg-slate-50 text-slate-700 font-medium">
+                            <span>6. Reflection</span>
+                            <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">2m</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- TINKERCAD DIRECT PORTAL CARD -->
+                <div class="bg-cyan-900 rounded-2xl p-4 text-white text-xs space-y-2">
+                    <div class="font-bold text-cyan-200 flex items-center gap-1.5">
+                        <i class="fa-solid fa-cube"></i> Tinkercad Direct Portal
+                    </div>
+                    <p class="text-cyan-100 text-[11px]">Classroom portal ready? Open your design workspace in a new tab.</p>
+                    <a href="https://www.tinkercad.com/joinclass" target="_blank" class="block text-center bg-cyan-400 text-cyan-950 font-extrabold py-1.5 rounded-lg hover:bg-cyan-300 transition">
+                        Open Tinkercad
+                    </a>
+                </div>
+
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- TIME IS UP WARNING MODAL -->
+    <div id="modal-time-up" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4 text-center shadow-2xl border-2 border-red-500 space-y-4">
+            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-3xl mx-auto">
+                <i class="fa-solid fa-hourglass-end"></i>
+            </div>
+            <h3 class="text-xl font-extrabold text-slate-800">TIME IS UP!</h3>
+            <p class="text-xs text-slate-600">The timer for <strong id="modal-section-name">this activity</strong> has finished. Please wrap up and proceed to the next task!</p>
+            <button onclick="closeTimeModal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-xs transition">
+                Acknowledge & Continue
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentTier = 'support';
+        let totalScore = 0;
+        let scoreState = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0 };
+        
+        // Timer globals
+        let timerInterval = null;
+        let timeRemaining = 120;
+        let activeTaskName = 'Lesson Entry';
+
+        /*
+           Proper 10x10 Word Search Grid with target CAD words embedded:
+           CONTRAST (R0, C0..7 horizontal)
+           DIFFERENCE (R3, C0..9 horizontal)
+           DISTINCT (R7, C0..7 horizontal)
+           ALIGN (R2..6, C8 vertical)
+           GROUP (R5..8, C1 vertical)
+        */
+        const wordGridMatrix = [
+            ['C','O','N','T','R','A','S','T','P','X'],
+            ['K','W','M','E','F','Z','H','Q','J','Y'],
+            ['L','S','I','N','O','P','Q','R','A','T'],
+            ['D','I','F','F','E','R','E','N','C','E'],
+            ['E','G','T','U','H','V','J','K','L','M'],
+            ['N','R','I','W','Q','S','S','T','I','V'],
+            ['W','O','N','Y','Z','A','B','C','G','E'],
+            ['D','I','S','T','I','N','C','T','N','G'],
+            ['H','P','J','K','L','M','N','O','P','Q'],
+            ['X','Y','Z','U','V','W','A','B','C','D']
+        ];
+
+        // Exact coordinates for targets
+        const targetWords = {
+            'CONTRAST': ['0-0','0-1','0-2','0-3','0-4','0-5','0-6','0-7'],
+            'DIFFERENCE': ['3-0','3-1','3-2','3-3','3-4','3-5','3-6','3-7','3-8','3-9'],
+            'DISTINCT': ['7-0','7-1','7-2','7-3','7-4','7-5','7-6','7-7'],
+            'ALIGN': ['2-8','3-8','4-8','5-8','6-8'],
+            'GROUP': ['4-1','5-1','6-1','7-1','8-1']
+        };
+
+        let selectedCells = new Set();
+        let foundWords = new Set();
+
+        window.onload = function() {
+            renderWordSearchGrid();
+
+            // Disable copy/paste in text inputs
+            const textFields = document.querySelectorAll('input, textarea');
+            textFields.forEach(field => {
+                field.addEventListener('copy', (e) => e.preventDefault());
+                field.addEventListener('paste', (e) => e.preventDefault());
+                field.addEventListener('cut', (e) => e.preventDefault());
+            });
+
+            // Default Tier Setup (Support Tier active on initial load)
+            setTier('support');
+        };
+
+        function getObjectivesText() {
+            return "Dubai Modern Education School Grade 6 ICT Lesson Objectives. The Student Will: Combine and modify 3 dimensions shapes using Grouping, Aligning, and Resizing tools in Tinkercad. Construct an ergonomic 3D Pencil Grip Model with standard 8 millimeter inner pencil shaft dimensions ready for 3D printing.";
+        }
+
+        // TIER SELECTION & VOICE ASSISTANT STRICT CONTROL
+        function setTier(tier) {
+            currentTier = tier;
+            document.getElementById('btn-tier-support').className = 'px-3 py-1 rounded-lg font-medium transition-all ' + (tier === 'support' ? 'bg-amber-500 text-white shadow' : 'text-teal-200 hover:text-white');
+            document.getElementById('btn-tier-core').className = 'px-3 py-1 rounded-lg font-medium transition-all ' + (tier === 'core' ? 'bg-amber-500 text-white shadow' : 'text-teal-200 hover:text-white');
+            document.getElementById('btn-tier-challenge').className = 'px-3 py-1 rounded-lg font-medium transition-all ' + (tier === 'challenge' ? 'bg-amber-500 text-white shadow' : 'text-teal-200 hover:text-white');
+
+            const supportBtns = document.querySelectorAll('.support-only');
+            const tierTitle = document.getElementById('tier-title');
+            const tierDesc = document.getElementById('tier-desc');
+
+            if (tier === 'support') {
+                // ACTIVATE Voice Assistant ONLY for Support Tier
+                supportBtns.forEach(el => el.style.display = 'inline-flex');
+                tierTitle.innerText = "Support Tier Task Instructions";
+                tierDesc.innerText = "Follow step-by-step guidance. Target cylinder height = 25mm, inner hole = 8mm. Voice assistant enabled for audio reading!";
+                enableSelectionTTS();
+            } else {
+                // DEACTIVATE & HIDE Voice Assistant completely for Core & Challenge Tiers
+                supportBtns.forEach(el => el.style.display = 'none');
+                disableSelectionTTS();
+
+                if (tier === 'core') {
+                    tierTitle.innerText = "Core Tier Task Instructions";
+                    tierDesc.innerText = "Construct a pencil grip with centered 8mm hole. Add ergonomic outer bumps or textured rings for finger comfort.";
+                } else {
+                    tierTitle.innerText = "Challenge Tier Extension";
+                    tierDesc.innerText = "Design an advanced dual-density pencil grip! Add angled finger slot cutouts using grouped hole shapes.";
+                }
+            }
+        }
+
+        // TEXT-TO-SPEECH (TTS) VOICE ASSISTANT LOGIC
+        let selectionTTSHandler = null;
+
+        function enableSelectionTTS() {
+            if (selectionTTSHandler) return;
+            selectionTTSHandler = function() {
+                if (currentTier === 'support') {
+                    const text = window.getSelection().toString().trim();
+                    if (text.length > 2) {
+                        readAloudText(text);
+                    }
+                }
+            };
+            document.addEventListener('mouseup', selectionTTSHandler);
+        }
+
+        function disableSelectionTTS() {
+            if (selectionTTSHandler) {
+                document.removeEventListener('mouseup', selectionTTSHandler);
+                selectionTTSHandler = null;
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        function readAloudText(text) {
+            // ONLY ALLOW SPEECH SYNTHESIS IF SUPPORT TIER IS ACTIVE
+            if (currentTier !== 'support') return;
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop active speech
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // WORD SEARCH INTERACTIVE ENGINE
+        function renderWordSearchGrid() {
+            const container = document.getElementById('word-search-container');
+            container.innerHTML = '';
+
+            for (let r = 0; r < 10; r++) {
+                for (let c = 0; c < 10; c++) {
+                    const key = `${r}-${c}`;
+                    const btn = document.createElement('div');
+                    btn.className = 'word-cell aspect-square flex items-center justify-center bg-white rounded border border-slate-200 cursor-pointer hover:bg-teal-100 font-mono text-xs font-bold transition-all';
+                    btn.setAttribute('data-coord', key);
+                    btn.innerText = wordGridMatrix[r][c];
+                    btn.onclick = function() {
+                        toggleCell(key, this);
+                    };
+                    container.appendChild(btn);
+                }
+            }
+        }
+
+        function toggleCell(coordKey, element) {
+            if (selectedCells.has(coordKey)) {
+                selectedCells.delete(coordKey);
+                element.classList.remove('selected');
+            } else {
+                selectedCells.add(coordKey);
+                element.classList.add('selected');
+            }
+            checkWordSearchProgress();
+        }
+
+        function checkWordSearchProgress() {
+            Object.keys(targetWords).forEach(word => {
+                const coords = targetWords[word];
+                const allSelected = coords.every(k => selectedCells.has(k));
+                
+                if (allSelected && !foundWords.has(word)) {
+                    foundWords.add(word);
+                    // Mark tag as found
+                    const tag = document.getElementById(`tag-${word}`);
+                    if (tag) {
+                        tag.className = 'px-2 py-0.5 bg-emerald-600 text-white rounded font-bold shadow-sm';
+                        tag.innerText = `✓ ${word}`;
+                    }
+                    // Mark cells on grid as permanently found
+                    coords.forEach(k => {
+                        const cell = document.querySelector(`[data-coord="${k}"]`);
+                        if (cell) cell.classList.add('found');
+                    });
+                }
+            });
+        }
+
+        function resetWordSearch() {
+            selectedCells.clear();
+            foundWords.clear();
+            
+            ['CONTRAST', 'DIFFERENCE', 'DISTINCT', 'ALIGN', 'GROUP'].forEach(w => {
+                const tag = document.getElementById(`tag-${w}`);
+                if (tag) {
+                    tag.className = 'px-2 py-0.5 bg-slate-200 rounded text-slate-600 font-semibold border border-slate-300';
+                    tag.innerText = w;
+                }
+            });
+
+            renderWordSearchGrid();
+        }
+
+        // TIMER LOGIC
+        function playBeep() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + 0.8);
+            } catch (e) {
+                console.log("Audio play blocked");
+            }
+        }
+
+        function startSectionTimer(secId, seconds) {
+            clearInterval(timerInterval);
+            timeRemaining = seconds;
+
+            const labelMap = {
+                's1': 'Lesson Entry Vocab',
+                's2': 'Do Now! Login',
+                's3': 'Teach Video',
+                's4': 'Main Task Pencil Grip',
+                's5': 'Progress Check',
+                's6': 'Closure Reflection'
+            };
+
+            activeTaskName = labelMap[secId] || 'Task';
+            document.getElementById('timer-task-label').innerText = activeTaskName;
+
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    playBeep();
+                    showTimeUpModal();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeRemaining / 60);
+            const secs = timeRemaining % 60;
+            const formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            document.getElementById('timer-display').innerText = formatted;
+
+            const card = document.getElementById('timer-card');
+            if (timeRemaining <= 10 && timeRemaining > 0) {
+                card.classList.add('timer-warning');
+            } else {
+                card.classList.remove('timer-warning');
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeRemaining = 120;
+            updateTimerDisplay();
+        }
+
+        function showTimeUpModal() {
+            document.getElementById('modal-section-name').innerText = activeTaskName;
+            document.getElementById('modal-time-up').classList.remove('hidden');
+        }
+
+        function closeTimeModal() {
+            document.getElementById('modal-time-up').classList.add('hidden');
+        }
+
+        // CHECK SECTION ANSWERS & SCORING
+        function checkSection1() {
+            const m1 = document.getElementById('match-1').value;
+            const m2 = document.getElementById('match-2').value;
+            const m3 = document.getElementById('match-3').value;
+
+            const vocabFoundCount = foundWords.size;
+            let matchPts = 0;
+            if (m1 === 'Contrast') matchPts += 3;
+            if (m2 === 'Difference') matchPts += 3;
+            if (m3 === 'Distinct') matchPts += 3;
+
+            const gridPts = Math.min(6, vocabFoundCount * 2);
+            const total = matchPts + gridPts;
+
+            scoreState.s1 = total;
+            document.getElementById('s1-status').innerHTML = `<span class="${total >= 12 ? 'text-teal-600' : 'text-amber-600'}">✓ Score: ${total}/15 Pts</span>`;
+            recalculateTotalScore();
+        }
+
+        function checkSection2() {
+            const c1 = document.getElementById('chk-login-1').checked;
+            const c2 = document.getElementById('chk-login-2').checked;
+
+            if (c1 && c2) {
+                scoreState.s2 = 10;
+                document.getElementById('s2-status').innerHTML = '<span class="text-teal-600">✓ Verified (10/10 Pts)</span>';
+            } else {
+                scoreState.s2 = 0;
+                document.getElementById('s2-status').innerHTML = '<span class="text-red-500">Incomplete Checklist</span>';
+            }
+            recalculateTotalScore();
+        }
+
+        function checkSection3() {
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+
+            let pts = 0;
+            if (q1 && q1.value === 'Align') pts += 10;
+            if (q2 && q2.value === 'Hole') pts += 10;
+
+            scoreState.s3 = pts;
+            document.getElementById('s3-status').innerHTML = `<span class="${pts === 20 ? 'text-teal-600' : 'text-amber-600'}">Score: ${pts}/20 Pts</span>`;
+            recalculateTotalScore();
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const info = document.getElementById('file-info');
+                info.innerText = `✓ Loaded File: ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+                info.classList.remove('hidden');
+            }
+        }
+
+        function checkSection4() {
+            const t1 = document.getElementById('task-chk-1').checked;
+            const t2 = document.getElementById('task-chk-2').checked;
+            const t3 = document.getElementById('task-chk-3').checked;
+
+            let pts = 0;
+            if (t1) pts += 10;
+            if (t2) pts += 10;
+            if (t3) pts += 15;
+
+            scoreState.s4 = pts;
+            document.getElementById('s4-status').innerHTML = `<span class="${pts === 35 ? 'text-teal-600' : 'text-amber-600'}">Submitted: ${pts}/35 Pts</span>`;
+            recalculateTotalScore();
+        }
+
+        function checkSection5() {
+            const e1 = document.getElementById('eval-1').checked;
+            const e2 = document.getElementById('eval-2').checked;
+            const e3 = document.getElementById('eval-3').checked;
+
+            let count = (e1 ? 1 : 0) + (e2 ? 1 : 0) + (e3 ? 1 : 0);
+            let pts = Math.round((count / 3) * 10);
+
+            scoreState.s5 = pts;
+            document.getElementById('s5-status').innerHTML = `<span class="text-teal-600">✓ Evaluated (${pts}/10 Pts)</span>`;
+            recalculateTotalScore();
+        }
+
+        let selectedPollVal = 0;
+        function selectPoll(num) {
+            selectedPollVal = num;
+            [1, 2, 3].forEach(n => {
+                const btn = document.getElementById(`poll-${n}`);
+                if (n === num) {
+                    btn.classList.add('border-teal-600', 'bg-teal-50');
+                } else {
+                    btn.classList.remove('border-teal-600', 'bg-teal-50');
+                }
+            });
+        }
+
+        function checkSection6() {
+            if (selectedPollVal > 0) {
+                scoreState.s6 = 10;
+                document.getElementById('s6-status').innerHTML = '<span class="text-teal-600">✓ Saved (10/10 Pts)</span>';
+            } else {
+                scoreState.s6 = 0;
+                document.getElementById('s6-status').innerHTML = '<span class="text-amber-600">Please select an option</span>';
+            }
+            recalculateTotalScore();
+        }
+
+        function toggleHint(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+        }
+
+        function recalculateTotalScore() {
+            totalScore = Object.values(scoreState).reduce((a, b) => a + b, 0);
+            document.getElementById('current-score').innerText = totalScore;
+        }
+
+        // EXPORT REPORT FOR GOOGLE CLASSROOM
+        function downloadReport() {
+            const studentName = document.getElementById('student-name').value || 'Student Name Unspecified';
+            const studentID = document.getElementById('student-id').value || 'No ID';
+            const studentSection = document.getElementById('student-section').value || 'Grade 6';
+
+            const reportContent = `
+=====================================================
+DUBAI MODERN EDUCATION SCHOOL - ICT WORKSHEET REPORT
+Subject: Grade 6 ICT • Lesson: Tinkercad Pencil Grip (Part 2)
+=====================================================
+STUDENT DETAILS:
+- Name: ${studentName}
+- Student ID: ${studentID}
+- Class Section: ${studentSection}
+- Selected Tier: ${currentTier.toUpperCase()}
+- Total Progress Score: ${totalScore} / 100 Points
+
+SECTION BREAKDOWN:
+- 1. Lesson Entry (Word Search & Match): ${scoreState.s1} / 15 Pts
+- 2. Do Now (Tinkercad Login): ${scoreState.s2} / 10 Pts
+- 3. Teach (Core CAD Tools Quiz): ${scoreState.s3} / 20 Pts
+- 4. Main Task (Pencil Grip Modeling): ${scoreState.s4} / 35 Pts
+- 5. Progress Check (Rubric Checklist): ${scoreState.s5} / 10 Pts
+- 6. Closure (Reflection): ${scoreState.s6} / 10 Pts
+
+Teacher: Shaima Sameer
+Timestamp: ${new Date().toLocaleString()}
+=====================================================
+            `.trim();
+
+            const element = document.createElement('a');
+            const file = new Blob([reportContent], { type: 'text/plain' });
+            element.href = URL.createObjectURL(file);
+            element.download = `${studentName.replace(/\s+/g, '_')}_${studentSection.replace(/\s+/g, '')}_Tinkercad_PencilGrip_Report.txt`;
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+    </script>
+</body>
+</html>
